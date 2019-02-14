@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using ProgramaAcademico.Models;
+using ProgramaAcademico.Data;
 
 namespace ProgramaAcademico
 {
@@ -33,10 +36,13 @@ namespace ProgramaAcademico
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<ProgramaAcademicoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProgramaAcademicoContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ProgramaAcademicoContext context)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +65,7 @@ namespace ProgramaAcademico
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            DbInitializer.Initialize(context);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ProgramaAcademico.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Contacto()
         {
             return View();
         }
